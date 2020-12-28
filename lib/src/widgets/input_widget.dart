@@ -52,6 +52,7 @@ class InternationalPhoneNumberInput extends StatefulWidget {
   final String hintText;
   final String errorMessage;
 
+  final BoxDecoration selectorContainerDecoration;
   final double selectorButtonOnErrorPadding;
   final double spaceBetweenSelectorAndTextField;
   final int maxLength;
@@ -96,6 +97,7 @@ class InternationalPhoneNumberInput extends StatefulWidget {
       this.initialValue,
       this.hintText = 'Phone number',
       this.errorMessage = 'Invalid phone number',
+      this.selectorContainerDecoration,
       this.selectorButtonOnErrorPadding = 24,
       this.spaceBetweenSelectorAndTextField = 12,
       this.maxLength = 15,
@@ -151,6 +153,7 @@ class _InputWidgetState extends State<InternationalPhoneNumberInput> {
   @override
   Widget build(BuildContext context) {
     return _InputWidgetView(
+      selectorContainerDecoration: widget.selectorContainerDecoration,
       state: this,
     );
   }
@@ -366,9 +369,11 @@ class _InputWidgetState extends State<InternationalPhoneNumberInput> {
 
 class _InputWidgetView
     extends WidgetView<InternationalPhoneNumberInput, _InputWidgetState> {
+
+  final BoxDecoration selectorContainerDecoration;
   final _InputWidgetState state;
 
-  _InputWidgetView({Key key, @required this.state})
+  _InputWidgetView({Key key, @required this.state, this.selectorContainerDecoration})
       : super(key: key, state: state);
 
   @override
@@ -388,6 +393,7 @@ class _InputWidgetView
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     SelectorButton(
+                      selectorContainerDecoration: selectorContainerDecoration,
                       country: state.country,
                       countries: state.countries,
                       onCountryChanged: state.onCountryChanged,

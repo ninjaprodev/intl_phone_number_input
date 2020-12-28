@@ -16,6 +16,7 @@ class SelectorButton extends StatelessWidget {
   final String locale;
   final bool isEnabled;
   final bool isScrollControlled;
+  final BoxDecoration selectorContainerDecoration;
 
   final ValueChanged<Country> onCountryChanged;
 
@@ -31,6 +32,7 @@ class SelectorButton extends StatelessWidget {
     @required this.onCountryChanged,
     @required this.isEnabled,
     @required this.isScrollControlled,
+    @required this.selectorContainerDecoration
   }) : super(key: key);
 
   @override
@@ -57,37 +59,41 @@ class SelectorButton extends StatelessWidget {
                 useEmoji: selectorConfig.useEmoji,
                 textStyle: selectorTextStyle,
               )
-        : MaterialButton(
-            key: Key(TestHelper.DropdownButtonKeyValue),
-            padding: EdgeInsets.zero,
-            minWidth: 0,
-            onPressed: countries.isNotEmpty && countries.length > 1 && isEnabled
-                ? () async {
-                    Country selected;
-                    if (selectorConfig.selectorType ==
-                        PhoneInputSelectorType.BOTTOM_SHEET) {
-                      selected = await showCountrySelectorBottomSheet(
-                          context, countries);
-                    } else {
-                      selected =
-                          await showCountrySelectorDialog(context, countries);
-                    }
+        : Container(
+          height: 60,
+          decoration: selectorContainerDecoration,
+          child: MaterialButton(
+              key: Key(TestHelper.DropdownButtonKeyValue),
+              padding: EdgeInsets.zero,
+              minWidth: 0,
+              onPressed: countries.isNotEmpty && countries.length > 1 && isEnabled
+                  ? () async {
+                      Country selected;
+                      if (selectorConfig.selectorType ==
+                          PhoneInputSelectorType.BOTTOM_SHEET) {
+                        selected = await showCountrySelectorBottomSheet(
+                            context, countries);
+                      } else {
+                        selected =
+                            await showCountrySelectorDialog(context, countries);
+                      }
 
-                    if (selected != null) {
-                      onCountryChanged(selected);
+                      if (selected != null) {
+                        onCountryChanged(selected);
+                      }
                     }
-                  }
-                : null,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Item(
-                country: country,
-                showFlag: selectorConfig.showFlags,
-                useEmoji: selectorConfig.useEmoji,
-                textStyle: selectorTextStyle,
+                  : null,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: Item(
+                  country: country,
+                  showFlag: selectorConfig.showFlags,
+                  useEmoji: selectorConfig.useEmoji,
+                  textStyle: selectorTextStyle,
+                ),
               ),
             ),
-          );
+        );
   }
 
   List<DropdownMenuItem<Country>> mapCountryToDropdownItem(
